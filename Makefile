@@ -39,18 +39,21 @@ lint: golangci-lint ## Run golangci-lint
 pkg: ## Build pkg
 	CGO_ENABLED=0 go build -trimpath -ldflags "$(LDFLAGS)" ./...
 
-test: ## Run Tests
+test: ## Run Tests for all Go modules.
 	go test ./...
+	cd ./pkg/signature/kms/aws && go test ./... && cd -
+	cd ./pkg/signature/kms/azure && go test ./... && cd -
+	cd ./pkg/signature/kms/gcp && go test ./... && cd -
+	cd ./pkg/signature/kms/hashivault && go test ./... && cd -
 
 test-e2e: ## Run E2E Tests
 	cd $(INTEGRATION_TEST_DIR); ./e2e-test.sh
 
 fuzz: $(GO-FUZZ-BUILD) ## Run Fuzz tests
-	cd $(FUZZ_DIR);$(GO-FUZZ-BUILD) -o pem-fuzz.zip ./pem 
+	cd $(FUZZ_DIR);$(GO-FUZZ-BUILD) -o pem-fuzz.zip ./pem
 	cd $(FUZZ_DIR);$(GO-FUZZ-BUILD) -o signature-fuzz.zip ./signature
-	cd $(FUZZ_DIR);$(GO-FUZZ-BUILD) -o fuzz-fuzz.zip . 
-	cd $(FUZZ_DIR);$(GO-FUZZ-BUILD) -o dsse-fuzz.zip ./dsse 
-
+	cd $(FUZZ_DIR);$(GO-FUZZ-BUILD) -o fuzz-fuzz.zip .
+	cd $(FUZZ_DIR);$(GO-FUZZ-BUILD) -o dsse-fuzz.zip ./dsse
 
 clean: ## Clean workspace
 	rm -rf sigstore
