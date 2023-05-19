@@ -26,7 +26,10 @@ jobs:
           - pkg/signature/kms/hashivault
     steps:
       - uses: actions/checkout@v2
-      - uses: actions-ecosystem/action-push-tag@v1
-        with:
-          tag: ${{ matrix.module }}/${{ github.ref_name }}
-          message: 'synced Go module tag ${{ matrix.module }}/${{ github.ref_name }}'
+      - run: |
+          tag="${{ matrix.module }}/${{ github.ref_name }}"
+          echo tagging "${tag}"
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git tag -a "${tag}"
+          git push origin "${tag}"
