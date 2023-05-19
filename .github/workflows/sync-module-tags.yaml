@@ -28,4 +28,4 @@ jobs:
       - uses: actions-ecosystem/action-push-tag@v1
         with:
           tag: ${{ matrix.module }}/${{ github.ref_name }}
-          message: 'synced Go module tag ${{ matrix.module }}/${{ github.ref_name }}
+          message: 'synced Go module tag ${{ matrix.module }}/${{ github.ref_name }}'
