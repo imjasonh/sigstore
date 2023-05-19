@@ -46,6 +46,13 @@ test: ## Run Tests for all Go modules.
 	cd ./pkg/signature/kms/gcp && go test ./... && cd -
 	cd ./pkg/signature/kms/hashivault && go test ./... && cd -
 
+tidy: ## Run go mod tidy all Go modules.
+	go mod tidy
+	cd ./pkg/signature/kms/aws && go mod tidy && cd -
+	cd ./pkg/signature/kms/azure && go mod tidy && cd -
+	cd ./pkg/signature/kms/gcp && go mod tidy && cd -
+	cd ./pkg/signature/kms/hashivault && go mod tidy && cd -
+
 test-e2e: ## Run E2E Tests
 	cd $(INTEGRATION_TEST_DIR); ./e2e-test.sh
 
